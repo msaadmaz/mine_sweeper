@@ -1,5 +1,5 @@
 import environment
-
+import agent
 if __name__ == '__main__':
-    print(environment.create_mine_sweeper((5, 5), 5))
+    mine_field = environment.create_mine_sweeper((2, 2), 0)
 
