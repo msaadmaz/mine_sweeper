@@ -3,7 +3,7 @@ import numpy as np
 
 # This is what each cell holds
 class Cell():
-    def __init__(self, value, hidden, flag, hidden_neighbors_list, hidden_neighbors_count, revealed_safe_neighbors):
+    def __init__(self, value, hidden, flag, hidden_neighbors_list, hidden_neighbors_count, reveal_safe_neighbors):
         # Clue
         self.value = value
         # If cell is hidden or revealed
@@ -15,7 +15,7 @@ class Cell():
         # Number of hidden neighbors
         self.hidden_neighbors_count = hidden_neighbors_count
         # Number of safe neighbors uncovered
-        self.revealed_safe_neighbors = revealed_safe_neighbors
+        self.reveal_safe_neighbors = reveal_safe_neighbors
 
 
 def create_mine_sweeper(dim, num_mines):
