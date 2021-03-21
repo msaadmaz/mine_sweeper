@@ -1,5 +1,6 @@
 import environment
 import numpy as np
+import random
 # This will make a fringe of hidden neigbors
 def make_list(mine_field):
     total_hidden_cells = []
@@ -17,10 +18,12 @@ def play(mine_field):
     revealed_mine = 0
 
     mine_flagged = 0
-    (a, b) = np.random.choice(fringe)
+    index = random.randint(0,len(fringe)-1)
+    a = fringe[index]
     while len(fringe):
-        query(mine_field, mine_field[a,b], a, b, revealed_mine, mine_flagged, fringe)
-        (a, b) = np.random.choice(fringe)
+        index = random.randint(0, len(fringe) - 1)
+        a = fringe[index]
+        query(mine_field, mine_field[a[0],a[1]], a[0], a[1], revealed_mine, mine_flagged, fringe)
 
 
 def query(mine_field, target, i,j, revealed_mine, mine_flagged, fringe):
@@ -40,8 +43,7 @@ def query(mine_field, target, i,j, revealed_mine, mine_flagged, fringe):
         increment_Safe_decrement_hidden((i,j), mine_field, 0)
 
     # Remove from Fringe
-    fringe.remove(i, j)
-
+    fringe.remove((i, j))
 
     #  If the total number of mines (the clue) minus the number of revealed mines is the number of hidden neighbors,
     if (selected.value - revealed_mine) == selected.hidden_neighbors_count:
@@ -61,7 +63,7 @@ def query(mine_field, target, i,j, revealed_mine, mine_flagged, fringe):
         total_safe = 3-selected.value
     else:
         total_safe = 8-selected.value
-    hid = total_safe - selected.revealed_safe_neighbors
+    hid = total_safe - selected.reveal_safe_neighbors
     if hid == selected.hidden_neighbors_count:
         # Every Hidden Neighbor is Safe
         for (x,y) in selected.hidden_neighbors_list:
@@ -86,7 +88,7 @@ def increment_Safe_decrement_hidden(pair, mine_field, mode):
         if (mode ==0):
             mine_field[x - 1, y].reveal_safe_neighbors += 1
         else:
-            mine_field[x - 1, y].hidden_neighbors -= 1
+            mine_field[x - 1, y].hidden_neighbors_count -= 1
             mine_field[x - 1, y].hidden_neighbors_list.remove((x,y))
 
     # Checks Left Neighboring cell
@@ -94,21 +96,21 @@ def increment_Safe_decrement_hidden(pair, mine_field, mode):
         if (mode == 0):
             mine_field[x, y - 1].reveal_safe_neighbors += 1
         else:
-            mine_field[x, y-1].hidden_neighbors -= 1
+            mine_field[x, y-1].hidden_neighbors_count -= 1
             mine_field[x, y-1].hidden_neighbors_list.remove((x, y))
     # Checks Right Neighboring cell
     if y + 1 < len(mine_field) and mine_field[x, y + 1] :
         if(mode == 0):
             mine_field[x, y + 1].reveal_safe_neighbors += 1
         else:
-            mine_field[x, y + 1].hidden_neighbors -= 1
+            mine_field[x, y + 1].hidden_neighbors_count -= 1
             mine_field[x, y + 1].hidden_neighbors_list.remove((x, y))
     # Checks the Bottom Cell
     if x + 1 < len(mine_field) and mine_field[x + 1, y] :
         if(mode == 0):
             mine_field[x + 1, y].reveal_safe_neighbors += 1
         else:
-            mine_field[x + 1, y].hidden_neighbors -= 1
+            mine_field[x + 1, y].hidden_neighbors_count -= 1
             mine_field[x + 1, y].hidden_neighbors_list.remove((x, y))
 
     # Check to Upper Left Cell
@@ -116,26 +118,26 @@ def increment_Safe_decrement_hidden(pair, mine_field, mode):
         if(mode == 0):
             mine_field[x - 1, y - 1].reveal_safe_neighbors += 1
         else:
-            mine_field[x - 1, y - 1].hidden_neighbors -= 1
+            mine_field[x - 1, y - 1].hidden_neighbors_count -= 1
             mine_field[x - 1, y - 1].hidden_neighbors_list.remove((x, y))
     # Check the Upper Right Cell
     if x - 1 > 0 and y + 1 < len(mine_field) and mine_field[x - 1, y + 1]:
         if (mode == 0):
             mine_field[x - 1, y + 1].reveal_safe_neighbors += 1
         else:
-            mine_field[x - 1, y + 1].hidden_neighbors -= 1
+            mine_field[x - 1, y + 1].hidden_neighbors_count -= 1
             mine_field[x - 1, y + 1].hidden_neighbors_list.remove((x, y))
     # Check the Lower Left Cell
     if x + 1 < len(mine_field) and y - 1 > 0 and mine_field[x + 1, y - 1]:
         if(mode ==0):
             mine_field[x + 1, y - 1].reveal_safe_neighbors += 1
         else:
-            mine_field[x + 1, y - 1].hidden_neighbors -= 1
+            mine_field[x + 1, y - 1].hidden_neighbors_count -= 1
             mine_field[x + 1, y - 1].hidden_neighbors_list.remove((x, y))
     # Check the Lower Right Cell
     if x + 1 < len(mine_field) and y + 1 < len(mine_field) and mine_field[x + 1, y + 1]:
         if(mode == 0):
             mine_field[x + 1, y + 1].reveal_safe_neighbors += 1
         else:
-            mine_field[x + 1, y + 1].hidden_neighbors -= 1
+            mine_field[x + 1, y + 1].hidden_neighbors_count -= 1
             mine_field[x + 1, y + 1].hidden_neighbors_list.remove((x, y))
