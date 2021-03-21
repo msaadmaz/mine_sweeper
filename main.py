@@ -1,5 +1,7 @@
 import environment
+import show_mine
 import agent
 if __name__ == '__main__':
-    mine_field = environment.create_mine_sweeper((2, 2), 0)
+    mine_field = environment.create_mine_sweeper((5, 5), 5)
+    show_mine.show(mine_field)
 
