@@ -6,6 +6,7 @@ revealed_mine = 0
 
 mine_flagged = 0
 
+
 # This will make a fringe of hidden neigbors
 def make_list(mine_field):
     total_hidden_cells = []
@@ -47,7 +48,7 @@ def query(mine_field, target, i, j, fringe):
         global revealed_mine
         revealed_mine += 1  # Mine went off and is now revealed mine
         increment_Safe_decrement_hidden((i, j), mine_field, 1)
-        fringe.remove((i,j))
+        fringe.remove((i, j))
         return fringe
 
     # Since cell is revealed and safe, update safe_neighbors attribute for its neighbors
