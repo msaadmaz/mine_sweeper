@@ -6,6 +6,7 @@ revealed_mine = 0
 
 mine_flagged = 0
 
+
 # This will make a fringe of hidden neigbors
 def make_list(mine_field):
     total_hidden_cells = []
@@ -38,7 +39,7 @@ def query(mine_field, target, i, j, fringe):
         global revealed_mine
         revealed_mine += 1  # Mine went off and is now revealed mine
         increment_Safe_decrement_hidden((i, j), mine_field, 1)
-        fringe.remove((i,j))
+        fringe.remove((i, j))
         return fringe
 
     # Since cell is revealed and safe, update safe_neighbors attribute for its neighbors
@@ -61,10 +62,11 @@ def query(mine_field, target, i, j, fringe):
 
     # If the total number of safe neighbors (8 - clue) minus the number of revealed safe neighbors is the number of
     # hidden neighbors If cell is any of 4 corners, max neighbors is 3, not 8
-    if (i,j) == (0, 0) or (i,j) == (0, len(mine_field) - 1) or (i,j) == (len(mine_field) - 1, 0) or (i,j) == (len(mine_field) - 1, len(mine_field) - 1):
-            total_safe = 3 - selected.value
+    if (i, j) == (0, 0) or (i, j) == (0, len(mine_field) - 1) or (i, j) == (len(mine_field) - 1, 0) or (i, j) == (
+            len(mine_field) - 1, len(mine_field) - 1):
+        total_safe = 3 - selected.value
     else:
-            total_safe = 8 - selected.value
+        total_safe = 8 - selected.value
     hid = total_safe - selected.reveal_safe_neighbors
     if hid == selected.hidden_neighbors_count:
         # Every Hidden Neighbor is Safe

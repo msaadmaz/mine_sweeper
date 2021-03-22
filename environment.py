@@ -2,6 +2,9 @@ import numpy as np
 
 
 # This is what each cell holds
+import show_mine
+
+
 class Cell():
     def __init__(self, value, hidden, flag, hidden_neighbors_list, hidden_neighbors_count, reveal_safe_neighbors, clue):
         # mine or safe
@@ -26,7 +29,7 @@ def create_mine_sweeper(dim, num_mines):
     index = np.random.choice(np.arange(size), num_mines)
     while len(np.unique(index)) != num_mines:
         index = np.random.choice(np.arange(size), num_mines)
-    mine_field[index] = 1
+    mine_field[index] = -1
     mine_field = mine_field.reshape(dim)
     mine_field = input_count(mine_field)
 
@@ -34,8 +37,8 @@ def create_mine_sweeper(dim, num_mines):
     for x in range(len(mine_field)):
         for y in range(len(mine_field[x])):
             temp = mine_field[x][y]
-            if temp == 1:
-                mine_field[x][y] = Cell(temp, True, False, [], 0, 0, 0)
+            if temp == -1:
+                mine_field[x][y] = Cell(1, True, False, [], 0, 0, 0)
             else:
                 mine_field[x][y] = Cell(0, True, False, [], 0, 0, temp)
 
@@ -44,7 +47,8 @@ def create_mine_sweeper(dim, num_mines):
         for y in range(len(mine_field[x])):
             temp1 = hidden_neighbor_check((x, y), mine_field)[0]
             temp2 = hidden_neighbor_check((x, y), mine_field, )[1]
-            mine_field[x][y] = Cell(hidden_neighbors_list=temp1, hidden_neighbors_count=temp2)
+            mine_field[x][y].hidden_neighbors_list = temp1
+            mine_field[x][y].hidden_neighbors_count = temp2
     return mine_field
 
 

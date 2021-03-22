@@ -17,11 +17,10 @@ def show(mine):
                 temp_mine[i][j] = -2
             elif mine[i][j].flag:
                 temp_mine[i][j] = -3
-            elif mine[i][j] == 1:
-                temp_mine[i][j] = mine[i][j].value
+            elif mine[i][j].value == 1:
+                temp_mine[i][j] = -1
             else:
                 temp_mine[i][j] = mine[i][j].clue
-
 
     # make color map of fixed colors
     cmap = colors.ListedColormap(['yellow', 'grey', 'tab:red', 'white'])
