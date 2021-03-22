@@ -20,6 +20,8 @@ def show(mine):
             else:
                 temp_mine[i][j] = mine[i][j].value
 
+    print(temp_mine)
+
     # make color map of fixed colors
     cmap = colors.ListedColormap(['yellow', 'grey', 'tab:red', 'white'])
     bounds = [-3, -2, -1, 0, 1]
@@ -28,13 +30,12 @@ def show(mine):
     # have imshow show only colors specified on the inputs specified
     plt.imshow(temp_mine, interpolation='none', cmap=cmap, norm=norm)
     plt.grid()
-    for i in range(len(mine)):
-        for j in range(len(mine)):
-            if temp_mine[i][j] > 0:
-                plt.text(i, j, temp_mine[i][j])
     ax = plt.gca()
     ax.set_yticks(np.arange(-0.5, len(mine), 1))
     ax.set_xticks(np.arange(-0.5, len(mine), 1))
     ax.set_yticklabels([])
     ax.set_xticklabels([])
+    for (j, i), label in np.ndenumerate(temp_mine):
+        ax.text(i, j, int(label))
+
     plt.show()
