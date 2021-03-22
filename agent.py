@@ -24,6 +24,15 @@ def play(mine_field):
         index = random.randint(0, len(fringe) - 1)
         a = fringe[index]
         query(mine_field, mine_field[a[0], a[1]], a[0], a[1], fringe)
+    global revealed_mine
+    global mine_flagged
+    total_mines = revealed_mine+mine_flagged
+    if(total_mines!=0):
+        final_score = mine_flagged/total_mines * 100
+    else:
+        final_score = 0
+    print(final_score)
+    print("%")
 
 
 def query(mine_field, target, i, j, fringe):
@@ -61,10 +70,12 @@ def query(mine_field, target, i, j, fringe):
 
     # If the total number of safe neighbors (8 - clue) minus the number of revealed safe neighbors is the number of
     # hidden neighbors If cell is any of 4 corners, max neighbors is 3, not 8
-    if (i,j) == (0, 0) or (i,j) == (0, len(mine_field) - 1) or (i,j) == (len(mine_field) - 1, 0) or (i,j) == (len(mine_field) - 1, len(mine_field) - 1):
-            total_safe = 3 - selected.value
-    else:
-            total_safe = 8 - selected.value
+    #if (i,j) == (0, 0) or (i,j) == (0, len(mine_field) - 1) or (i,j) == (len(mine_field) - 1, 0) or (i,j) == (len(mine_field) - 1, len(mine_field) - 1):
+     #       total_safe = 3 - selected.value
+    #else:
+     #       total_safe = 8 - selected.value
+    n = neighbor_count((i,j), mine_field)
+    total_safe = n - selected.value
     hid = total_safe - selected.reveal_safe_neighbors
     if hid == selected.hidden_neighbors_count:
         # Every Hidden Neighbor is Safe
@@ -145,3 +156,30 @@ def increment_Safe_decrement_hidden(pair, mine_field, mode):
         else:
             mine_field[x + 1, y + 1].hidden_neighbors_count -= 1
             mine_field[x + 1, y + 1].hidden_neighbors_list.remove((x, y))
+def neighbor_count(pair, mine_field):
+    (x, y) = pair
+    count = 0
+    if x - 1 >= 0 and mine_field[x - 1, y]:
+        count+=1
+    # Checks Left Neighboring cell
+    if y - 1 >= 0 and mine_field[x, y - 1]:
+        count +=1
+    # Checks Right Neighboring cell
+    if y + 1 < len(mine_field) and mine_field[x, y + 1]:
+        count +=1
+    # Checks the Bottom Cell
+    if x + 1 < len(mine_field) and mine_field[x + 1, y]:
+        count +=1
+    # Check to Upper Left Cell
+    if x - 1 >= 0 and y - 1 >= 0 and mine_field[x - 1, y - 1]:
+        count +=1
+    # Check the Upper Right Cell
+    if x - 1 >= 0 and y + 1 < len(mine_field) and mine_field[x - 1, y + 1]:
+        count +=1
+    # Check the Lower Left Cell
+    if x + 1 < len(mine_field) and y - 1 >= 0 and mine_field[x + 1, y - 1]:
+        count +=1
+    # Check the Lower Right Cell
+    if x + 1 < len(mine_field) and y + 1 < len(mine_field) and mine_field[x + 1, y + 1]:
+        count +=1
+    return count
