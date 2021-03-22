@@ -3,8 +3,8 @@ import numpy as np
 
 # This is what each cell holds
 class Cell():
-    def __init__(self, value, hidden, flag, hidden_neighbors_list, hidden_neighbors_count, reveal_safe_neighbors):
-        # Clue
+    def __init__(self, value, hidden, flag, hidden_neighbors_list, hidden_neighbors_count, reveal_safe_neighbors, clue):
+        # mine or safe
         self.value = value
         # If cell is hidden or revealed
         self.hidden = hidden
@@ -16,6 +16,8 @@ class Cell():
         self.hidden_neighbors_count = hidden_neighbors_count
         # Number of safe neighbors uncovered
         self.reveal_safe_neighbors = reveal_safe_neighbors
+        # Indicates how many mines is around the cell
+        self.clue = clue
 
 
 def create_mine_sweeper(dim, num_mines):
@@ -24,7 +26,7 @@ def create_mine_sweeper(dim, num_mines):
     index = np.random.choice(np.arange(size), num_mines)
     while len(np.unique(index)) != num_mines:
         index = np.random.choice(np.arange(size), num_mines)
-    mine_field[index] = -1
+    mine_field[index] = 1
     mine_field = mine_field.reshape(dim)
     mine_field = input_count(mine_field)
 
@@ -32,19 +34,17 @@ def create_mine_sweeper(dim, num_mines):
     for x in range(len(mine_field)):
         for y in range(len(mine_field[x])):
             temp = mine_field[x][y]
-            # temp1 = safe_neighbor_check((x,y), mine_field,1)[0]
-            # temp2 = safe_neighbor_check((x,y), mine_field,1)[1]
-            # temp3 = safe_neighbor_check((x,y), mine_field,0)[1]
-            # This is a place holder for the attributes
-            mine_field[x][y] = Cell(temp, True, False, [], 0, 0)
+            if temp == 1:
+                mine_field[x][y] = Cell(temp, True, False, [], 0, 0, 0)
+            else:
+                mine_field[x][y] = Cell(0, True, False, [], 0, 0, temp)
 
     # Fill in the correct attributes for each cell
     for x in range(len(mine_field)):
         for y in range(len(mine_field[x])):
-            temp = mine_field[x][y].value
             temp1 = hidden_neighbor_check((x, y), mine_field)[0]
             temp2 = hidden_neighbor_check((x, y), mine_field, )[1]
-            mine_field[x][y] = Cell(temp, True, False, temp1, temp2, 0)
+            mine_field[x][y] = Cell(hidden_neighbors_list=temp1, hidden_neighbors_count=temp2)
     return mine_field
 
 
