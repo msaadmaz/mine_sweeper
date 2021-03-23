@@ -32,6 +32,7 @@ def create_mine_sweeper(dim, num_mines):
     mine_field[index] = -1
     mine_field = mine_field.reshape(dim)
     mine_field = input_count(mine_field)
+    print(mine_field)
 
     # Change the entire matrix from int to type Cell
     for x in range(len(mine_field)):

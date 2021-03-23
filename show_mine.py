@@ -13,10 +13,11 @@ def show(mine):
     temp_mine = np.zeros((len(mine), len(mine)))
     for i in range(len(mine)):
         for j in range(len(mine)):
-            if mine[i][j].hidden:
-                temp_mine[i][j] = -2
-            elif mine[i][j].flag:
+            if mine[i][j].flag:
+                print("I am here")
                 temp_mine[i][j] = -3
+            elif mine[i][j].hidden:
+                temp_mine[i][j] = -2
             elif mine[i][j].value == 1:
                 temp_mine[i][j] = -1
             else:
