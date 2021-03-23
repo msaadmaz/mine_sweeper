@@ -27,7 +27,6 @@ def play(mine_field, strategy):
     while len(fringe):
         index = random.randint(0, len(fringe) - 1)
         a = fringe[index]
-        # print(f'This is iteration {counter} and the index is {a}')
         query(mine_field, mine_field[a[0], a[1]], a[0], a[1], fringe)
         counter += 1
         global safe_set
@@ -35,6 +34,7 @@ def play(mine_field, strategy):
             (s, t) = safe_set.pop()
             #   print((s,t))
             query(mine_field, mine_field[s, t], s, t, fringe)
+
 
     global revealed_mine
     global mine_flagged
@@ -44,6 +44,7 @@ def play(mine_field, strategy):
     else:
         final_score = 0
     print(f'this is final score: {final_score}')
+    return final_score
 
 
 def query(mine_field, target, i, j, fringe):
@@ -53,13 +54,8 @@ def query(mine_field, target, i, j, fringe):
     # Uncover the cell
     selected.hidden = False
 
-    # counter for amount of times bomb is selected
-    counter = 0
-
     # If cell is a bomb
     if selected.value == 1:
-        counter += 1
-        #  print(f"Bomb has been selected {counter} times")
         global revealed_mine
         revealed_mine += 1  # Mine went off and is now revealed mine
         increment_Safe_decrement_hidden((i, j), mine_field, 1)
@@ -76,15 +72,11 @@ def query(mine_field, target, i, j, fringe):
 
     #  If the total number of mines (the clue) minus the number of revealed mines is the number of hidden neighbors,
     if (selected.clue - revealed_mine) == selected.hidden_neighbors_count:
-        # print("Mines are being flagged")
         # Every Hidden Neighbor is a Mine
         # counter for mines being flagged
-        counter2 = 0
         for (x, y) in selected.hidden_neighbors_list:
             # Mark each neighbor w/ flag
             mine_field[x, y].flag = True
-            counter2 += 1
-            # print(f'{counter2} mines have been flagged')
             global mine_flagged
             mine_flagged += 1
             increment_Safe_decrement_hidden((x, y), mine_field, 1)
@@ -97,21 +89,13 @@ def query(mine_field, target, i, j, fringe):
     total_safe = n - selected.clue
     hidden_safe_neighbors = total_safe - selected.reveal_safe_neighbors
     if hidden_safe_neighbors == selected.hidden_neighbors_count:
-        # print("Going through safe neighbors")
 
         # counter for safe neighbors
         # counter3 = 0
         # Every Hidden Neighbor is Safe
         for (x, y) in selected.hidden_neighbors_list:
-            #  print(len(selected.hidden_neighbors_list))
-            # # This means that the cell has already been uncovered and queried
-            # if fringe.count((x, y)) == 0:
-            #     continue
-            # Query each safe cell and recursively call check
-            #  print (f'This is the safe cell being checked: {(x, y)}')
-            global set_safe
-            safe_set.add((x, y))
-        # print("Added")
+            global safe_set
+            safe_set.add((x,y))
 
         # Since each neighbor was safe and queried, empty the list
         # selected.hidden_neighbors_list.clear()
@@ -209,5 +193,3 @@ def neighbor_count(pair, mine_field):
     if x + 1 < len(mine_field) and y + 1 < len(mine_field) and mine_field[x + 1, y + 1]:
         count += 1
     return count
-
-# def check_safe_neighbors(mine_field, target, x, y, fringe):
