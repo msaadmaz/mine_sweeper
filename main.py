@@ -1,3 +1,4 @@
+import advanced_strategy
 import environment
 import show_mine
 import agent
@@ -21,7 +22,8 @@ if __name__ == '__main__':
     #         temp2 = environment.hidden_neighbor_check((x, y), mine_field)[1]
     #         mine_field[x][y].hidden_neighbors_list = temp1
     #         mine_field[x][y].hidden_neighbors_count = temp2
-    agent.play(mine_field)
+    # agent.play(mine_field)
+    advanced_strategy.play(mine_field, 4)
     show_mine.show(mine_field)
     print("Done")
 
